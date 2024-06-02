@@ -38,5 +38,4 @@ public class LoginPage extends PageBase {
 
         return this;
     }
-
 }

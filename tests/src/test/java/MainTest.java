@@ -10,8 +10,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.UUID;
 
 public class MainTest {
     public WebDriver driver;
@@ -19,7 +19,7 @@ public class MainTest {
     public JsonNode testQueries;
 
     @Before
-    public void setup()  throws MalformedURLException, IOException, InterruptedException {
+    public void setup()  throws IOException {
         ChromeOptions options = new ChromeOptions();
         driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), options);
         driver.manage().window().maximize();
@@ -97,7 +97,6 @@ public class MainTest {
         Assert.assertTrue(mainPage.getBodyText().contains("A kijelentkezés sikeresen megtörtént!"));
     }
 
-
     @Test
     public void passwordChange() {
         String oldPassword = config.get("password").asText();
@@ -122,6 +121,17 @@ public class MainTest {
         settingsPage.changePassword(oldPassword + "#", oldPassword);
         Assert.assertTrue(settingsPage.getBodyText().contains("Beállítások módosítása sikeresen megtörtént!"));
         mainPage.logout();
+    }
+
+
+    @Test
+    public void forgotPassword() throws Exception{
+        MailChecker mailChecker = new MailChecker(config.get("apikey").asText());
+        ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage(driver);
+        forgotPasswordPage.sendForm(config.get("email").asText());
+        Assert.assertTrue(forgotPasswordPage.getBodyText().contains("A jelszó helyreállítási útmutatót elküldtük a megadott e-mail címre!"));
+
+        Assert.assertEquals("Elfelejtett jelszó", mailChecker.getNewestEmail(UUID.fromString(config.get("inboxid").asText())));
     }
 
 
