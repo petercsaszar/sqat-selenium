@@ -1,0 +1,7 @@
+{
+  "user": "USER",
+  "email": "USER@mailslurp.net",
+  "password": "PASSWORD",
+  "apikey": "MAILSLURP_API_KEY",
+  "inboxid": "MAILSLURP_INBOX_UUID"
+}
