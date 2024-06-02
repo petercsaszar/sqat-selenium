@@ -13,4 +13,8 @@ public class MainPage extends PageBase {
         this.waitAndReturnElement(searchBarBy).sendKeys(query + "\n");
         return new SearchResultPage(driver);
     }
+
+    public void logout() {
+        this.driver.get("https://www.hestore.hu/logout.php");
+    }
 }
